@@ -1,20 +1,23 @@
-import { useState } from 'react'
-
+import { useState } from "react";
+import { db } from "../firebase/config";
+import { collection, addDoc } from "firebase/firestore";
 export default function BookForm() {
-  const [newBook, setNewBook] = useState('')
+  const [newBook, setNewBook] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    console.log(newBook)
+    e.preventDefault();
+    await addDoc(collection(db, "books"), {
+      title: newBook
+    });
 
-    setNewBook('')
-  }
+    setNewBook("");
+  };
 
   return (
     <form onSubmit={handleSubmit}>
       <label>
         <span>Add a new book title:</span>
-        <input 
+        <input
           required
           type="text"
           onChange={(e) => setNewBook(e.target.value)}
@@ -23,5 +26,5 @@ export default function BookForm() {
       </label>
       <button>Add</button>
     </form>
-  )
+  );
 }
